@@ -67,7 +67,7 @@ public class CreateUserTest {
         responseUserWithoutName.then().assertThat().body("success", equalTo(false));
     }
 
-    @Step
+    @Step("Log in and save bearer token")
     public void loginAndSetBearerToken() {
         // подготовим объект избавляясь от "name", оставим только данные для авторизации
         LoginRequest loginRequest = LoginRequestGenerator.prepareFrom(randomRegisterUserRequest);

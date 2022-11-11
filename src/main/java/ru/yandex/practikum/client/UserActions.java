@@ -1,5 +1,6 @@
 package ru.yandex.practikum.client;
 
+import io.qameta.allure.Step;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import ru.yandex.practikum.dto.LoginRequest;
@@ -9,6 +10,7 @@ import static ru.yandex.practikum.config.Config.*;
 
 public class UserActions {
 
+    @Step("Create user")
     public Response createUser(Object randomUserRequest) {
         return given()
                 .header("Content-type", "application/json")
@@ -19,6 +21,7 @@ public class UserActions {
                 .post(AUTH_REGISTER);
     }
 
+    @Step("Log in")
     public Response login(LoginRequest loginRequest) {
         return given()
                 .header("Content-type", "application/json")
@@ -29,12 +32,14 @@ public class UserActions {
                 .post(AUTH_LOGIN);
     }
 
+    @Step("Log in and get bearer token from server response")
     public String loginAndGetBearerToken(LoginRequest loginRequest) {
         Response responseLogin = login(loginRequest); // авторизуемся и сохраним ответ
         JsonPath jsonPathEvaluator = responseLogin.jsonPath(); // извлечем accessToken из ответа и сохраним его
         return jsonPathEvaluator.get("accessToken");
     }
 
+    @Step("Delete user")
     public Response deleteUser(String bearerToken) {
         return given()
                 .header("Authorization", bearerToken)
@@ -43,6 +48,7 @@ public class UserActions {
                 .delete(AUTH_USER);
     }
 
+    @Step("Patch user data")
     public Response patchUserData(Object request, String bearerToken) {
         return given()
                 .header("Authorization", bearerToken)
